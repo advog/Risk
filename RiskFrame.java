@@ -64,7 +64,7 @@ public class RiskFrame extends javax.swing.JFrame {
  
         NEXTPHASE.setText("Next Phase");
         getContentPane().add(NEXTPHASE);
-        NEXTPHASE.setBounds(580, 720, 170, 60);
+        NEXTPHASE.setBounds(580, 720, 420, 60);
         NEXTPHASE.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -74,7 +74,7 @@ public class RiskFrame extends javax.swing.JFrame {
         
         SAVE.setText("Save");
         getContentPane().add(SAVE);
-        SAVE.setBounds(0, 0, 100, 30);
+        SAVE.setBounds(20, 20, 100, 30);
         SAVE.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -91,7 +91,7 @@ public class RiskFrame extends javax.swing.JFrame {
         
         LOAD.setText("Load");
         getContentPane().add(LOAD);
-        LOAD.setBounds(100, 0, 100, 30);
+        LOAD.setBounds(120, 20, 100, 30);
         LOAD.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -103,20 +103,10 @@ public class RiskFrame extends javax.swing.JFrame {
 		    }
 		});
         
-        PAUSE.setText("PAUSE");
-        getContentPane().add(PAUSE);
-        PAUSE.setBounds(500, 0, 100, 30);
-        PAUSE.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		    			updateButtons();
-		    			int x = 1/0;
-		    }
-		});
-
+        
         BONUSTROOPS.setText("Bonus");
         getContentPane().add(BONUSTROOPS);
-        BONUSTROOPS.setBounds(280, 720, 90, 60);
+        BONUSTROOPS.setBounds(20, 720, 440, 60);
         BONUSTROOPS.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -125,7 +115,7 @@ public class RiskFrame extends javax.swing.JFrame {
 		    
 		});
         
-        TURN.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        TURN.setFont(new java.awt.Font("Tahoma", 0, 36));
         TURN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TURN.setText("1");
         getContentPane().add(TURN);
@@ -135,9 +125,12 @@ public class RiskFrame extends javax.swing.JFrame {
         BACKGROUND.setIcon(new javax.swing.ImageIcon(getClass().getResource("/risk.png")));
         getContentPane().add(BACKGROUND);
         BACKGROUND.setBounds(0, 0, 1020, 790);
-
+        BACKGROUND.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
+        
+        //this.setUndecorated(true);
         pack();
-        this.setSize(1020,900);
+        this.setSize(1040,840);
+        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
         
         
@@ -626,10 +619,7 @@ public class RiskFrame extends javax.swing.JFrame {
     public void next() {
     	if (checkWin())
     		return;
-    	
-    	
-    	
-    	 
+
     	 else if( phase == 1) {
     		 phase++;
     	 }
@@ -654,11 +644,8 @@ public class RiskFrame extends javax.swing.JFrame {
 	    		phase = 1;
 	    	}
 	    	unhighlight();
-	    	
     	}
-    	
-    	
-    	
+
     	else if(phase == -1) {
     		boolean found = false;
     		for(territoryButton x: terr)

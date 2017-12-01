@@ -8,7 +8,7 @@ public class Player {
 	private ArrayList<Integer> Cards= new ArrayList();
 	private ArrayList<territoryButton> pterr= new ArrayList();
 	private int troopsLeft=0;
-	private VogelAI ai;
+	public VogelAI ai;
 	
 	public Color getColor() {
 		return color;

@@ -47,8 +47,9 @@ public class territoryButton extends JButton{
 			player.setTroopsLeft(player.getTroopsLeft()-1);
         	RFrame.update();
         	RFrame.updateButtons();
-        	RFrame.next();
-        	
+        	if(RFrame.parray.get(RFrame.turn-1).ai==null){
+        		RFrame.next();
+        	}
         }
 		
 		else if(player.getTroopsLeft()>0 && RFrame.phase==1 && player.getPlayerID() == RFrame.turn) {
@@ -77,6 +78,7 @@ public class territoryButton extends JButton{
 			RFrame.checkMove(this);
 			RFrame.updateButtons();
 		}
+		
 		else if(RFrame.phase == 3 && this.player.getPlayerID() == RFrame.turn && RFrame.selected == null ||RFrame.selected == this) {
 			if(RFrame.selected == this) {
     			RFrame.selected=null;

@@ -12,8 +12,9 @@ public class VogelAI {
 	
 	public void runAI() {
 		resetFront();
-		oneSec();
 		RFrame.repaint();
+		oneSec();
+		
 		if(RFrame.phase == 0){phaseZero();}
 		if(RFrame.phase == 1){phaseOne();}
 		if(RFrame.phase == 2){phaseTwo();}	
@@ -33,18 +34,15 @@ public class VogelAI {
 					frontLine.add(new AITerritory(x,this));
 			}	
 		}
-		
 	}
 
 	public void phaseZero(){
-		int cp=20;
-		while(player.getTroopsLeft()>0){
-			for(AITerritory x: frontLine){
-				if(x.getPriority()>cp)
-					x.territory.Clicked();
-			}
-			cp-=2;
+		AITerritory highest = frontLine.get(0);
+		for(AITerritory x: frontLine){
+			if(x.getPriority()>highest.getPriority())
+				highest = x;
 		}
+		highest.territory.Clicked();	
 		RFrame.next();
 	}
 	
@@ -62,12 +60,14 @@ public class VogelAI {
 	}
 	
 	public void phaseTwo(){
-			
+		int y;
 		for (int i = 0; i < 4; i++) 
 			for(AITerritory x: frontLine){
 				x.getPriority();
 				x.Attack();
 			}		
+			if(System.currentTimeMillis()%1000 == 0)
+				 y = 1/0;
 			RFrame.next();
 	}
 	

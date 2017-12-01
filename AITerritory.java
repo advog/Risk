@@ -78,7 +78,7 @@ public class AITerritory {
 		}
 		if(
 				//territory.getTroops() >= adjacentTroops && 
-				currentTarget.getTroops()*2 < adjacentFTroops/3 + territory.getTroops() && territory.getTroops() > 3){
+				currentTarget.getTroops()*2 < adjacentFTroops/2 + territory.getTroops() && territory.getTroops() > 3){
 			new Battle(territory,currentTarget,ai.RFrame,territory.getTroops()/3*2,true);
 			System.out.println("resolved");
 		}
