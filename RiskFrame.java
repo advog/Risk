@@ -575,6 +575,16 @@ public class RiskFrame extends javax.swing.JFrame {
     	return continents;
     }
     
+    public boolean checkLoss(Player p,Player a){
+    	if(p.getPterr().size()==0){
+    		a.getCards().addAll(p.getCards());
+    		return true;
+    	}
+    	return false;
+    }
+    
+    
+    
     private void set(){
     	 int startarmies = 25;
     	 Integer[] arr = new Integer[42];
@@ -620,10 +630,14 @@ public class RiskFrame extends javax.swing.JFrame {
        
     }
     
+    
     public void next() {
+    		
     	if (checkWin())
     		return;
-
+    	
+    	
+    	
     	 else if( phase == 1) {
     		 phase++;
     	 }

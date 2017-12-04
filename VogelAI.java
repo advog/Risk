@@ -18,13 +18,10 @@ public class VogelAI {
 		//oneSec();
 		
 		if(RFrame.phase == 0){phaseZero();}
-		System.out.println("stuck 1 ");
 		if(RFrame.phase == 1){phaseOneA();}
-		System.out.println("stuck 2 ");
 		if(RFrame.phase == 2){phaseTwoA();}	
-		System.out.println("stuck 3 ");
 		if(RFrame.phase == 3){phaseThree();}
-		System.out.println("stuck 4 ");
+		
 	}
 	
 	public void resetFront(){
@@ -60,10 +57,11 @@ public class VogelAI {
 		}
 		
 		int cp=target.getPriority();
-		int cpv = target.getPriority()/5;
+		int cpv = target.getPriority()/3;
 		if( cpv == 0)
 			cpv =1;
 		while(player.getTroopsLeft()>0 && cp>0){
+			resetFront();
 			for(AITerritory x: frontLine){
 				if(x.getPriority()>cp)
 					x.territory.Clicked();
@@ -71,17 +69,21 @@ public class VogelAI {
 			cp-=cpv;
 		}
 		
-		while(player.getTroopsLeft()>0)
+		while(player.getTroopsLeft()>0){
 			target.territory.Clicked();
-			
+			System.out.println("stuck c");
+			System.out.println(player.getPterr().size());
+		}
 		RFrame.next();
 	}
 	
 	public void phaseTwoA(){
 		resetFront();
 		for (int i = 0; i < 7; i++) { 
-			for(AITerritory x: frontLine){
-				x.Attack();
+			for(int x=0;x < frontLine.size();x++){
+				resetFront();
+				if(x<frontLine.size())
+					frontLine.get(x).Attack();
 			}
 		}
 		RFrame.next();
@@ -89,7 +91,7 @@ public class VogelAI {
 	
 	public void phaseThree(){
 		RFrame.updateButtons();
-		RFrame.NEXTPHASE.doClick();
+		//RFrame.NEXTPHASE.doClick();
 	}
 	
 	//public int StratValue(territoryButton btn) {

@@ -9,6 +9,7 @@ public class Player {
 	private ArrayList<territoryButton> pterr= new ArrayList();
 	private int troopsLeft=0;
 	public VogelAI ai;
+	public boolean dead= false;
 	
 	public Color getColor() {
 		return color;

@@ -64,7 +64,7 @@ public class AITerritory {
 		for(territoryButton x: continent)
 			if(x.getPlayer() == ai.player)
 				count++;
-		continentPriority = (int)(count/(double)continent.size()*3);
+		continentPriority = (int)(count/(double)continent.size()+1*3);
 	}
 	
 	public void calcTPriority() {
