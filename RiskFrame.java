@@ -15,7 +15,7 @@ public class RiskFrame extends javax.swing.JFrame {
     territoryButton selected;
     private ArrayList<territoryButton> terr= new ArrayList();
     public ArrayList<Player> parray= new ArrayList();
-    private territoryButton[][] continents = new territoryButton[6][];
+    public territoryButton[][] continents = new territoryButton[6][];
     private int[] cb = {5,2,2,7,5,3};
     public boolean newT;
     
@@ -571,6 +571,10 @@ public class RiskFrame extends javax.swing.JFrame {
         continents[5] = A;
     }
     
+    public territoryButton[][] getCont(){
+    	return continents;
+    }
+    
     private void set(){
     	 int startarmies = 25;
     	 Integer[] arr = new Integer[42];
@@ -914,7 +918,7 @@ public class RiskFrame extends javax.swing.JFrame {
     private javax.swing.JButton PAUSE;
     private javax.swing.JButton SAVE;
     private javax.swing.JButton LOAD;
-    private javax.swing.JButton NEXTPHASE;
+    public javax.swing.JButton NEXTPHASE;
     public javax.swing.JLabel TURN;
     
 

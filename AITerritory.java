@@ -5,13 +5,12 @@ public class AITerritory {
 	private ArrayList<territoryButton> instanceFFront = new ArrayList();
 	public territoryButton territory;
 	territoryButton currentTarget;
-	int attackPriority;
 	int defencePriority;
 	int totalPriority;
 	int continentPriority;
 	int adjacentTroops=0;
 	int adjacentFTroops=0;
-	territoryButton[] continent;
+	private ArrayList<territoryButton> continent = new ArrayList();
 	VogelAI ai;
 	
 	
@@ -19,6 +18,7 @@ public class AITerritory {
 		territory = t;
 		ai = a;
 		initFront();
+		initCont();
 	}
 	
 	public void initFront() {
@@ -35,35 +35,43 @@ public class AITerritory {
 		for(territoryButton x: instanceFront) {
 			adjacentTroops += x.getTroops();
 		}
-		defencePriority = (int)Math.pow(adjacentTroops - territory.getTroops(), 2)/territory.getTroops();
+		if(adjacentTroops - territory.getTroops()<0) {
+			defencePriority = 0;
+			return;
+		}
+		defencePriority = (int)Math.pow(adjacentTroops - territory.getTroops(), 2)/(adjacentTroops);
 	}
 	
-	public void calcAPriority(){
-		territoryButton weakest = instanceFront.get(0);
+	public void getTarget(){
+		territoryButton target = instanceFront.get(0);
 		for(territoryButton x: instanceFront) {
-			if(weakest.getTroops() > x.getTroops())
-				weakest = x;
+			if(x.getTroops() < target.getTroops())
+				target = x;
 		}
-		adjacentFTroops = 0;
-		for(territoryButton x: instanceFFront) {
-			adjacentFTroops += x.getTroops();
-		}
-		
-		currentTarget = weakest;
-		attackPriority = (int)Math.pow(territory.getTroops()-currentTarget.getTroops(),2)/(int)Math.pow(currentTarget.getTroops(),2);
+		currentTarget = target;
 	}
-
+	
+	public void initCont(){
+		for(int x = 0;x < ai.RFrame.getCont().length;x++)
+			for(int y=0;y < ai.RFrame.continents[x].length;y++)
+				if(ai.RFrame.continents[x][y] == territory)
+					for(int z=0;z < ai.RFrame.continents[x].length;z++)
+						continent.add(ai.RFrame.continents[x][z]);
+	}
+	
 	public void calcCPriority(){
-		continentPriority=0;
+		int count = 0;
+		for(territoryButton x: continent)
+			if(x.getPlayer() == ai.player)
+				count++;
+		continentPriority = (int)(count/(double)continent.size()*3);
 	}
 	
 	public void calcTPriority() {
 		calcDPriority();
-		calcAPriority();
 		calcCPriority();
-		totalPriority = 3*attackPriority + defencePriority
-				//+ continentPriority
-				;
+		totalPriority =  defencePriority*continentPriority;
+		System.out.println(defencePriority+ "   "+continentPriority);
 	}
 	
 	public int getPriority() {
@@ -72,14 +80,13 @@ public class AITerritory {
 	}
 
 	public void Attack() {
+		getTarget();
 		adjacentFTroops = 0;
 		for(territoryButton x: instanceFFront) {
 			adjacentFTroops += x.getTroops();
 		}
-		if(
-				//territory.getTroops() >= adjacentTroops && 
-				currentTarget.getTroops()*2 < adjacentFTroops/2 + territory.getTroops() && territory.getTroops() > 3){
-			new Battle(territory,currentTarget,ai.RFrame,territory.getTroops()/3*2,true);
+		if(currentTarget.getTroops() < adjacentFTroops/2 + territory.getTroops() && territory.getTroops() >= 4){
+			new Battle(territory,currentTarget,ai.RFrame,territory.getTroops()-1,true);
 			System.out.println("resolved");
 		}
 	}
