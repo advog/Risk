@@ -33,7 +33,6 @@ public class territoryButton extends JButton{
 	}
 	
 	public void Clicked() {
-		System.out.println("clicked");
 		if(RFrame.phase == -1 && player == null) {
         	setPlayer(RFrame.parray.get(RFrame.turn-1));
         	player.getPterr().add(this);
@@ -98,6 +97,7 @@ public class territoryButton extends JButton{
 		setText(""+troops);
 		setBackground(player.getColor());
 	}
+	
 	public void setPlayer(Player p){
 		if(player != null )
 			player.getPterr().remove(this);

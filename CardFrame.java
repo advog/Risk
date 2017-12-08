@@ -96,6 +96,38 @@ public class CardFrame extends javax.swing.JFrame {
     		player.addTroops(bonus);
     		RFrame.update();
     		RFrame.addb();
+    		int length = selectedcards.size();
+    		for(int x = 0; x < length;x++)
+    			player.getCards().remove(Integer.parseInt(selectedcards.get(0).getText()));
+    		dispose();
+    	}
+    }
+    
+    private void AIcheck(){
+    	
+    	
+    	
+    	
+    	int a=0,b=0,c=0,d=0;
+
+    	for(JButton x: selectedcards) {
+    		if(x.getText().equals("1"))
+    			a++;
+    		if(x.getText().equals("2"))
+    			b++;
+    		if(x.getText().equals("3"))
+    			c++;
+    		if(x.getText().equals("4"))
+    			d++;
+    	}
+    	System.out.println(a+" "+b+" "+c+" "+d);
+    	if(a+d >= 3 || b+d >= 3 || c+d >= 3 || (a>=1 && b>=1 && d>=1) || (a>=1 && c>=1 && d>=1) || (c>=1 && b>=1 && d>=1) || (a>=1 && b>=1 && c>=1)) {
+    		player.addTroops(bonus);
+    		RFrame.update();
+    		RFrame.addb();
+    		int length = selectedcards.size();
+    		for(int x = 0; x < length;x++)
+    			player.getCards().remove(Integer.parseInt(selectedcards.get(0).getText()));
     		dispose();
     	}
     }

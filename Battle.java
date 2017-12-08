@@ -228,7 +228,6 @@ public class Battle extends javax.swing.JFrame {
     	}
     		
     	if(resolve){
-    		System.out.println("ran");
     		roll();
     	}
     		
@@ -246,11 +245,14 @@ public class Battle extends javax.swing.JFrame {
     }
     
     public void victory(){
+    	Player att = selected.getPlayer();
+    	Player def = target.getPlayer();
     	target.setPlayer(selected.getPlayer());
     	target.setTroops(atroops);
     	RFrame.updateButtons();
     	resolve = false;
     	RFrame.newT=true;
+    	RFrame.checkLoss(def,att);
     	dispose();
     }
     

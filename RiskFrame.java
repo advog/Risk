@@ -15,7 +15,7 @@ public class RiskFrame extends javax.swing.JFrame {
     territoryButton selected;
     private ArrayList<territoryButton> terr= new ArrayList();
     public ArrayList<Player> parray= new ArrayList();
-    private territoryButton[][] continents = new territoryButton[6][];
+    public territoryButton[][] continents = new territoryButton[6][];
     private int[] cb = {5,2,2,7,5,3};
     public boolean newT;
     
@@ -571,6 +571,20 @@ public class RiskFrame extends javax.swing.JFrame {
         continents[5] = A;
     }
     
+    public territoryButton[][] getCont(){
+    	return continents;
+    }
+    
+    public boolean checkLoss(Player p,Player a){
+    	if(p.getPterr().size()==0){
+    		a.getCards().addAll(p.getCards());
+    		p.dead = true;
+    		System.out.println("death");
+    		return true;
+    	}
+    	return false;
+    }
+    
     private void set(){
     	 int startarmies = 25;
     	 Integer[] arr = new Integer[42];
@@ -617,6 +631,7 @@ public class RiskFrame extends javax.swing.JFrame {
     }
     
     public void next() {
+
     	if (checkWin())
     		return;
 
@@ -683,19 +698,6 @@ public class RiskFrame extends javax.swing.JFrame {
 	    		updateButtons();
     		}
     		
-    		
-    		/*if(parray.get(turn-1).troopsLeft>0) {
-	        	//JOptionPane.showMessageDialog(null,"Place all troops");
-	        	//return;
-	        //} 
-    	 	if(turn == parray.size()) {
-	        	phase = 1;
-	        	turn =1;
-	        }
-	        else {
-	        turn++;
-	        }
-	       	*/
 	     }
     	
     	
@@ -708,11 +710,14 @@ public class RiskFrame extends javax.swing.JFrame {
     	}
     	
     	
-    	update();
-    	updateButtons();
-    	System.out.println("runAI");
-    	parray.get(turn-1).runAI();
-    	
+    	if(parray.get(turn-1).dead)
+    		return;
+    	else{
+	    	update();
+	    	updateButtons();
+	    	System.out.println("runAI");
+	    	parray.get(turn-1).runAI();
+    	}
     }
 
     public int cBonus(){
@@ -726,6 +731,7 @@ public class RiskFrame extends javax.swing.JFrame {
     		if(t)
     			total += cb[x];
     	}
+    	System.out.println("total");
     	return total;
     }
     
@@ -750,14 +756,34 @@ public class RiskFrame extends javax.swing.JFrame {
     			return true;
     	}
     	else{
-    		JOptionPane.showMessageDialog(null,"invalid move");
     		return false;	
     	}
     }
 
+    public static boolean foundpath = false ;
+    public static ArrayList<territoryButton> found = new ArrayList();
+    
+    public boolean pathPrime(territoryButton start, territoryButton stop){
+    	foundpath = false;
+    	pathFind(start);
+    	if(found.contains(stop))
+    		return true;
+    	else
+    		return false;
+    }
+    
+    public void pathFind(territoryButton start){
+    	for(territoryButton x:	start.adjacent){
+    		if(start.getPlayer()== x.getPlayer() && !found.contains(x)){
+	    		found.add(x);
+    			pathFind(x);
+    		}
+    	}
+    }
+    
     public void move(territoryButton target){
     	System.out.println("move");
-    	if(selected.adjacent(target) && selected.getTroops() > 1){
+    	if(pathPrime(selected,target) && selected.getTroops() > 1){
 	    	int stay=1;
 			if(selected.usedTroops>0 && selected.usedTroops != selected.getTroops())
 				stay = 0;
@@ -782,6 +808,19 @@ public class RiskFrame extends javax.swing.JFrame {
 			next();
     	}	
     }
+    
+    public boolean AImove(territoryButton selected2,territoryButton target,int troops){
+    	if(pathPrime(selected2,target) && selected2.getTroops() > 1){
+			selected2.addTroops(-troops);
+			target.addTroops(troops);
+			updateButtons();
+			System.out.println("moved");
+			return true;
+    	}	
+    	return false;
+    }
+    
+    
 
     public void readFile(String s){
     	try {
@@ -914,8 +953,10 @@ public class RiskFrame extends javax.swing.JFrame {
     private javax.swing.JButton PAUSE;
     private javax.swing.JButton SAVE;
     private javax.swing.JButton LOAD;
-    private javax.swing.JButton NEXTPHASE;
+    public javax.swing.JButton NEXTPHASE;
     public javax.swing.JLabel TURN;
     
 
 }
+
+
