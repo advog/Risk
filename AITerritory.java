@@ -12,15 +12,8 @@ public class AITerritory {
 	int adjacentFTroops=0;
 	private ArrayList<territoryButton> continent = new ArrayList();
 	VogelAI ai;
-	
-	
-	public AITerritory(territoryButton t,VogelAI a){
-		territory = t;
-		ai = a;
-		initFront();
-		initCont();
-	}
-	
+
+
 	public void initFront() {
 		for(territoryButton x: territory.getAdjacent()) {
 			if(x.getPlayer() != ai.player)
@@ -29,7 +22,7 @@ public class AITerritory {
 				instanceFFront.add(x);
 		}
 	}
-	
+
 	public void calcDPriority(){
 		adjacentTroops = 0;
 		for(territoryButton x: instanceFront) {
@@ -41,7 +34,7 @@ public class AITerritory {
 		}
 		defencePriority = (int)Math.pow(adjacentTroops - territory.getTroops(), 2)/(adjacentTroops);
 	}
-	
+
 	public void getTarget(){
 		territoryButton target = instanceFront.get(0);
 		for(territoryButton x: instanceFront) {
@@ -50,7 +43,7 @@ public class AITerritory {
 		}
 		currentTarget = target;
 	}
-	
+
 	public void initCont(){
 		for(int x = 0;x < ai.RFrame.getCont().length;x++)
 			for(int y=0;y < ai.RFrame.continents[x].length;y++)
@@ -58,7 +51,7 @@ public class AITerritory {
 					for(int z=0;z < ai.RFrame.continents[x].length;z++)
 						continent.add(ai.RFrame.continents[x][z]);
 	}
-	
+
 	public void calcCPriority(){
 		int count = 0;
 		for(territoryButton x: continent)
@@ -66,14 +59,14 @@ public class AITerritory {
 				count++;
 		continentPriority = (int)(count/(double)continent.size()+1*3);
 	}
-	
+
 	public void calcTPriority() {
 		calcDPriority();
 		calcCPriority();
 		totalPriority =  defencePriority*continentPriority;
 		System.out.println(defencePriority+ "   "+continentPriority);
 	}
-	
+
 	public int getPriority() {
 		calcTPriority();
 		return totalPriority;
